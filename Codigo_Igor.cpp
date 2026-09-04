@@ -1,31 +1,45 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <clocale>
+
 using namespace std;
 
-void New(int a[], int b)
+void Nome_usuario(string a)
 {
-    for (int i = 0; i < b; i++)
-    {
-        cout << a[i] << " ";
+
+}
+void Salva_nome(string a){
+    ofstream ficheiro("Nome_jogadores.txt", ios::app);
+    if(ficheiro.is_open()){
+        ficheiro << a << "\n";
     }
+    ficheiro.close();
 }
 
 int main()
 {
-    int tamanho;
+    setlocale(LC_ALL, "Portuguese");
+    string Nome;
+    int Escolha;
 
-    cout << "Digite o tamanho do vetor: ";
-    cin >> tamanho;
+    do{
+    cout << "***************************" << endl;
+    cout << "*      JOGO DA FORCA      *" << endl;
+    cout << "***************************" << endl;
 
-    int *vetor = new int[tamanho];
+    cout << "digite o seu nome : ";
+    cin >> Nome;
 
-    for (int i = 0; i < tamanho; i++)
-    {
-        cout << "Digite o " << (i + 1) << "º numero: ";
-        cin >> vetor[i];
-    }
+    Salva_nome(Nome);
 
-    New(vetor, tamanho);
+    cout << "Dezeja continuar ? 1 = Sim - 0 = Não : ";
+    cin >> Escolha;
+    }while(Escolha != 0);
 
-    delete[] vetor;
+
+
+
+
+    return 0;
 }
