@@ -11,7 +11,7 @@ struct palavraItem{
 };
 
 // função para carregar o ficheiro 'palavras.txt'
-void carregarPalavras(const string$ nomeFicheiro,
+void carregarPalavras(const string$ nomeFicheiro, //O const é a abreviatura da palavra inglesa "constant" (que significa constante ou imutável).
     vector<palavraItem>& palavras)
 {
     ifstream arquivo(nomeFicheiro); //função para abrir o ficheiro 'nomeFicheiro'
@@ -37,6 +37,7 @@ void carregarPalavras(const string$ nomeFicheiro,
 
             item.categora = linha.substr(0, pos); //substr(): pega uma parte da string e pega a parte depois da virgula.
             item.palavra = linha.substr(pos + 1);
+            //O substr é a abreviatura de substring (que significa "subfrase" ou "pedaço de texto"). É uma função do C++ usada para cortar e extrair um pedaço de uma palavra ou frase (string).
 
             palavras.push_back(item);// push_back() "Apanha estes dados (item) e acrescenta-os ao fim da minha lista (lista)".
         } // no array é necessario informar no inicio a quantidade, assim, o push_back ajusta o tamanho sozinho, vai aumentando o tamanho da lista automaticamente à medida que encontra novas palavras.
