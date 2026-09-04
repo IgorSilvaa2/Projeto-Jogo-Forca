@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream> // necessario para abrir os ficheiros
-#include <string>
+#include <string> // ler uma frase e verificar se contém uma palavra.
 #include <vector> // necessario para ler a lista de palavras
 using namespace std;
 
