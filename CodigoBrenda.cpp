@@ -11,7 +11,7 @@ struct palavraItem{
 
 void carregarPalavras(const string& nomeFicheiro, vector<palavraItem>& palavras)
 {
-    ifstream arquivo(nomeFicheiro); 
+    ifstream arquivo("palavras.txt"); 
 
     if(!arquivo.is_open()){
         cout << "Erro ao abrir o ficheiro.\n";
