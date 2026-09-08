@@ -9,24 +9,34 @@ struct palavraItem{
     string palavra;
 };
 
-void carregarPalavras(const string& nomeFicheiro, vector<palavraItem>& palavras)
+struct Jogador
+{
+    string nome;
+    int pontuacao;
+};
+
+void carregarPalavras(const string& nomeFicheiro, 
+    vector<palavraItem>& palavras)
 {
     ifstream arquivo("palavras.txt"); 
 
-    if(!arquivo.is_open()){
+    if(!arquivo.is_open()) 
+    {
         cout << "Erro ao abrir o ficheiro.\n";
         return;
     }
 
     string linha;
 
-    while (getline(arquivo, linha)){
+    while (getline(arquivo, linha)) 
+    {
         size_t pos = linha.find(','); 
-        if (pos != string::npos)
-        {
+        
+        if (pos != string::npos) 
+        { 
             palavraItem item;
 
-            item.categoria = linha.substr(0, pos);
+            item.categoria = linha.substr(0, pos); 
             item.palavra = linha.substr(pos + 1); 
 
             palavras.push_back(item); 
@@ -51,14 +61,18 @@ void guardarPartida(
         return;
     }
 
-    arquivo << "\nNome: " << nomeJogador << "\nCategoria: " << categoriaEscolhida 
-            << "\nDificuldade: " << nomeDificuldade << "\nPalavra Secreta: " << palavraSecreta 
-            << "\nErros: " << erros << "\nPontuação: " << pontuacao
-            << "\nResultado: " << resultado;
+    arquivo << nomeJogador << ";"
+            << categoriaEscolhida << ";"
+            << nomeDificuldade << ";"
+            << palavraSecreta << ";"
+            << erros << ";"
+            << pontuacao << ";"
+            << resultado << "\n";
 
     arquivo.close();
 }
 
+//criação do boneco
 void desenharForca(int erros) {
     cout << "\n  +---+\n";
     cout << "  |   |\n";
@@ -76,16 +90,50 @@ void mostrarRanking(){
         return;
     }
 
+    vector<Jogador> jogadores;
     string linha;
 
-    cout << "\n-------------- RANKING -------------- \n";
-    cout << "\nO ranking será mostrado aqui.\n";
+    while (getline(arquivo, linha))
+    {
+        size_t pos = linha.find(';');
 
-    while (getline(arquivo, linha)){
-        cout << linha << endl;
+        if (pos != string::npos)
+        {
+            Jogador jogador;
+
+            jogador.nome = linha.substr(0, pos);
+
+            size_t posPontuacao = linha.find(';', pos + 1);
+            posPontuacao = linha.find(';', posPontuacao + 1);
+            posPontuacao = linha.find(';', posPontuacao + 1);
+            posPontuacao = linha.find(';', posPontuacao + 1);
+
+            size_t posFinal = linha.find(';', posPontuacao + 1);
+
+            jogador.pontuacao = stoi(
+                linha.substr(
+                    posPontuacao + 1,
+                    posFinal - posPontuacao - 1
+                )
+            );
+
+            jogadores.push_back(jogador);
+        }
     }
 
     arquivo.close();
+
+    cout << "\n-------------- RANKING -------------- \n";
+
+    for (int i = 0; i < jogadores.size(); i++)
+    {
+        cout << i + 1
+             << "º "
+             << jogadores[i].nome
+             << " - "
+             << jogadores[i].pontuacao
+             << " pontos\n";
+    }
 }
 
 void jogar(const string& nomejogador, vector<palavraItem>& listaPalavras){
@@ -191,7 +239,6 @@ if (numero < 1 || numero > palavrasFiltradas.size()){
     cout << "Número inválido!\n";
     return;
 }
-
 
 string letrasUsadas = "";
 int erros = 0;
