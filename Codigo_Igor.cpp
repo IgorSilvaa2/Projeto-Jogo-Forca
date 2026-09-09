@@ -2,6 +2,11 @@
 #include <string>
 #include <fstream>
 #include <clocale>
+#include <limits>
+#include <vector>
+#include <ios>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -11,14 +16,88 @@ void limpa_Tela()
     system("CLS");
 }
 /////////////////////// FUNCAO INPUT STRING ///////////////////////////////////
-void input_String(string a)
+void inputNomes(const string& a)
 {
-    ofstream ficheiro("Input_String.txt", ios::app);
+    ofstream ficheiro("inputNomes.txt", ios::app);
     if(ficheiro.is_open())
     {
         ficheiro << a << "\n";
     }
     ficheiro.close();
+}
+//////////////////////// FUNCAO MENU DIFICULDADDE //////////////////////////////////
+
+void menu_Dificuldade()
+{
+    int dificuldade;
+    ofstream criaDificuldade("Dificuldades.txt");
+
+    if(criaDificuldade.is_open())
+    {
+        //FACEIS
+        criaDificuldade << "GATO CASA CARRO PORTA FRUTA LIVRO MESA CHAVE BOLA AGUA \n";
+        criaDificuldade << "GUITARRA CACHORRO ESPELHO COMPUTADOR TRABALHO DINHEIRO PLANETA FLORESTA MOCHILA GIRAFA \n";
+        criaDificuldade << "PARALELEPIPEDO PSICOLOGO OTORRINOLARINGOLOGISTA XILOFONE ARQUEOLOGIA EXCECAO SUBTERRANEO CALEIDOSCOPIO ESFINGE SIMETRIA \n";
+    }
+    else
+    {
+        cout << "O ficheiro de dificuldades nao foi aberto \n";
+    }
+    criaDificuldade.close();
+
+    ifstream escolheDif ("Dificuldades.txt");
+    string salvaDif;
+    vector <string> difVet;
+
+    if(escolheDif.is_open()){
+        while(escolheDif >> salvaDif){
+            difVet.push_back(salvaDif);
+        }
+        escolheDif.close();
+    }else{
+        cout << "Erro ao abrir ficheiro \n";
+    }
+
+    if(difVet.empty()){
+        cout << "O ficheiro esta vazio ! \n";
+    }
+
+
+    cout << "\n 1 - Facil";
+    cout << "\n 2 - Medio";
+    cout << "\n 3 - Dificil \n";
+
+    do
+    {
+        cout << "Escolha uma opcao : ";
+        cin >> dificuldade ;
+        if(dificuldade == 1)
+        {
+            srand(time(0));
+            int aletorio = rand() % difVet.size();
+            string difEscolhida = difVet[aletorio];
+            cout << difEscolhida;
+        }
+        else if (dificuldade == 2)
+        {
+            srand(time(0));
+            int aletorio = rand() % difVet.size();
+
+        }
+        else if(dificuldade == 3)
+        {
+            srand(time(0));
+            int aletorio = rand() % difVet.size();
+
+        }
+        else
+        {
+            cout << "Opcao invalida ! \n";
+        }
+    }
+    while(dificuldade <1 || dificuldade > 3);
+
+
 }
 ////////////////////////// FUNCAO MENU ////////////////////////////////
 void menu_Inicial()
@@ -29,13 +108,15 @@ void menu_Inicial()
     do
     {
         cout << "============================================================================================\n"
-     << "   _  ___   ____  ___    ____   _      _____ ___  ____   ____   _         +---+\n"
-     << "  | |/ _ \\ / ___|/ _ \\  |  _ \\ / \\    |  ___/ _ \\|  _ \\ / ___| / \\        |   |\n"
-     << "  | | | | | |  _| | | | | | | / _ \\   | |_ | | | | |_) | |    / _ \\       O   |\n"
-     << "  | | |_| | |_| | |_| | | |_/ / ___ \\  |  _|| |_| |  _ <| |___/ ___ \\    /|\\  |\n"
-     << " _/ |\\___/ \\____|\\___/  |____/_/   \\_\\ |_|   \\___/|_| \\_\\\\____/_/   \\_\\  / \\  |\n"
-     << "|__/                                                                          |\n"
-     << "============================================================================================\n" << endl;
+
+             << "   _  ___   ____  ___    ____   _      _____ ___  ____   ____   _         +---+\n"
+             << "  | |/ _ \\ / ___|/ _ \\  |  _ \\ / \\    |  ___/ _ \\|  _ \\ / ___| / \\        |   |\n"
+             << "  | | | | | |  _| | | | | | | / _ \\   | |_ | | | | |_) | |    / _ \\       O   |\n"
+             << "  | | |_| | |_| | |_| | | |_/ / ___ \\  |  _|| |_| |  _ <| |___/ ___ \\    /|\\  |\n"
+             << " _/ |\\___/ \\____|\\___/  |____/_/   \\_\\ |_|   \\___/|_| \\_\\\\____/_/   \\_\\  / \\  |\n"
+             << "|__/                                                                          |\n"
+             << "============================================================================================\n" << "\n";
+
 
         cout << "Escolha uma opcao !";
         cout << "\n 1 - Jogar";
@@ -43,6 +124,7 @@ void menu_Inicial()
         cout << "\n 3 - Sair";
         cout << "\n =========================================\n";
         cin >> escolha;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch(escolha)
         {
@@ -54,11 +136,12 @@ void menu_Inicial()
                  << " |  _ \\|  _| | |\\/| |     \\ \\ / /| |  \\| | | | | | | | | | |\n"
                  << " | |_) | |___| |  | |      \\ V / | | |\\  | |_| | |_| |_|_|_|\n"
                  << " |____/|_____|_|  |_|       \\_/  |_|_| \\_|____/ \\___/(_|_|_)\n"
-                 << "=========================================================================\n" << endl;
+                 << "=========================================================================\n" << "\n";
 
             cout << "Digite o seu nome : ";
-            cin >> nome;
-            input_String(nome);
+            getline (cin,nome);
+            inputNomes(nome);
+            menu_Dificuldade();
             break;
         case 2 :
             limpa_Tela();
@@ -76,7 +159,7 @@ void menu_Inicial()
                  << "3. FIM DE JOGO:\n"
                  << "   - VITORIA: Se descobrir todas as letras.\n"
                  << "   - DERROTA: Se atingir o limite de 6 erros.\n\n"
-                 << "=========================================\n" << endl;
+                 << "=========================================\n" << "\n";
             int sub_Escolha;
 
             do
@@ -96,7 +179,7 @@ void menu_Inicial()
                 }
                 else
                 {
-                    cout << "Invalido " << endl;
+                    cout << "Invalido " << "\n";
                     escolha = 0;
                 }
             }
@@ -112,6 +195,7 @@ void menu_Inicial()
     }
     while(escolha < 1 || escolha > 3);
 }
+
 //////////////////////// MAIN //////////////////////////////////
 
 int main()
@@ -119,6 +203,7 @@ int main()
     setlocale(LC_ALL, "Portuguese");
 
     menu_Inicial();
+
 
     return 0;
 }
