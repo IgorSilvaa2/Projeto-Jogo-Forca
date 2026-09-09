@@ -358,7 +358,7 @@ int main()
     cout << "\nDigite o seu nome: ";
     cin >> nomejogador;
 
-
+    criarFicheiroPalavras();
     carregarPalavras("palavras.txt", listaPalavras);
 
     if (listaPalavras.empty()){
