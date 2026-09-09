@@ -17,7 +17,7 @@ struct Jogador
 void carregarPalavras(const string& nomeFicheiro, 
     vector<palavraItem>& palavras)
 {
-    ifstream arquivo("palavras.txt"); 
+    ifstream arquivo(nomeFicheiro); 
 
     if(!arquivo.is_open()) 
     {
@@ -155,14 +155,23 @@ void mostrarRanking(){
 
     cout << "\n-------------- RANKING -------------- \n";
 
-    for (int i = 0; i < jogadores.size(); i++)
-    {
+    for (int i = 0; i < jogadores.size() - 1; i++){
+        for (int j = i + 1; j < jogadores.size(); j++){
+            if (jogadores[j].pontuacao > jogadores[i].pontuacao){
+                Jogador temp = jogadores[i];
+                jogadores[i] = jogadores[j];
+                jogadores[j] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < jogadores.size(); i++){
         cout << i + 1
-             << "º "
-             << jogadores[i].nome
-             << " - "
-             << jogadores[i].pontuacao
-             << " pontos\n";
+            << "º "
+            << jogadores[i].nome
+            << " - "
+            << jogadores[i].pontuacao
+            << " pontos\n";
     }
 }
 
@@ -186,10 +195,19 @@ void jogar(const string& nomejogador, vector<palavraItem>& listaPalavras){
     }
     else if (opcao == 2){
         mostrarRanking();
+
+        char jogarAgora;
+
+        cout << "\nDeseja jogar? (s/n): ";
+        cin >> jogarAgora;
+
+        if (jogarAgora == 'n' || jogarAgora == 'N'){
+            cout << "\nAté à próxima, " << nomejogador << "!\n";
+            return;
+        }
     }
     else if (opcao == 3){
-        cout << "\nAté à próxima, "
-             << nomejogador << "!\n";
+        cout << "\nAté à próxima, " << nomejogador << "!\n";
     }
     else{
         cout << "\nOpção inválida!\n";
@@ -261,13 +279,12 @@ int numero;
 cout << "\nEscolha um número de 1 a " << palavrasFiltradas.size() << ": ";
 cin >> numero;
 
-string palavraSecreta =
-    palavrasFiltradas[numero -1];
-
 if (numero < 1 || numero > palavrasFiltradas.size()){
     cout << "Número inválido!\n";
     return;
 }
+string palavraSecreta =
+    palavrasFiltradas[numero -1];
 
 string letrasUsadas = "";
 int erros = 0;
