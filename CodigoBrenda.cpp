@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream> 
+#include <fstream>
 #include <string>
 #include <vector> 
 using namespace std;
@@ -8,7 +8,6 @@ struct palavraItem{
     string categoria;
     string palavra;
 };
-
 struct Jogador
 {
     string nome;
@@ -31,9 +30,7 @@ void carregarPalavras(const string& nomeFicheiro,
     while (getline(arquivo, linha)) 
     {
         size_t pos = linha.find(','); 
-        
-        if (pos != string::npos) 
-        { 
+        if (pos != string::npos){ 
             palavraItem item;
 
             item.categoria = linha.substr(0, pos); 
@@ -43,6 +40,39 @@ void carregarPalavras(const string& nomeFicheiro,
         } 
     }
     arquivo.close();
+}
+void criarFicheiroPalavras()
+{
+    ifstream teste("palavras.txt");
+
+    if (!teste.is_open())
+    {
+        ofstream arquivo("palavras.txt");
+
+        arquivo << "Animais,gato\n";
+        arquivo << "Animais,cachorro\n";
+        arquivo << "Animais,elefante\n";
+        arquivo << "Animais,leao\n";
+        arquivo << "Animais,tigre\n";
+
+        arquivo << "Frutas,banana\n";
+        arquivo << "Frutas,laranja\n";
+        arquivo << "Frutas,maca\n";
+        arquivo << "Frutas,morango\n";
+        arquivo << "Frutas,abacaxi\n";
+
+        arquivo << "Paises,portugal\n";
+        arquivo << "Paises,brasil\n";
+        arquivo << "Paises,espanha\n";
+        arquivo << "Paises,franca\n";
+        arquivo << "Paises,italia\n";
+
+        arquivo.close();
+
+        cout << "\nFicheiro palavras.txt criado com sucesso!\n";
+    }
+
+    teste.close();
 }
 
 void guardarPartida(
@@ -151,7 +181,6 @@ void jogar(const string& nomejogador, vector<palavraItem>& listaPalavras){
     cout << "\nEscolha uma opção: ";
     cin >> opcao;
 
-    // Verificar opção
     if (opcao == 1){
         cout << "\nVocê escolheu JOGAR!\n";
     }
