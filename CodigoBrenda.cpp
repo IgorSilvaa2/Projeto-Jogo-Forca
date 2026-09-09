@@ -54,18 +54,41 @@ void criarFicheiroPalavras()
         arquivo << "Animais,elefante\n";
         arquivo << "Animais,leao\n";
         arquivo << "Animais,tigre\n";
+        arquivo << "Animais,vaca\n";
+        arquivo << "Animais,zebra\n";
+        arquivo << "Animais,macaco\n";
+        arquivo << "Animais,girafa\n";
+        arquivo << "Animais,tubarao\n";
+        arquivo << "Animais,camelo\n";
+        arquivo << "Animais,flamingo\n";
+        arquivo << "Animais,caranguejo\n";
+        arquivo << "Animais,hiena\n";
+        arquivo << "Animais,pantera\n";
 
         arquivo << "Frutas,banana\n";
         arquivo << "Frutas,laranja\n";
         arquivo << "Frutas,maca\n";
         arquivo << "Frutas,morango\n";
         arquivo << "Frutas,abacaxi\n";
+        arquivo << "Frutas,manga\n";
+        arquivo << "Frutas,cereja\n";
+        arquivo << "Frutas,carambola\n";
+        arquivo << "Frutas,tamarindo\n";
+        arquivo << "Frutas,pitaya\n";
 
         arquivo << "Paises,portugal\n";
         arquivo << "Paises,brasil\n";
         arquivo << "Paises,espanha\n";
         arquivo << "Paises,franca\n";
         arquivo << "Paises,italia\n";
+        arquivo << "Paises,alemanha\n";
+        arquivo << "Paises,bangladeche\n";
+        arquivo << "Paises,argentina\n";
+        arquivo << "Paises,marrocos\n";
+        arquivo << "Paises,tailandia\n";
+        arquivo << "Paises,irao\n";
+        arquivo << "Paises,mocambique\n";
+
 
         arquivo.close();
 
@@ -368,9 +391,9 @@ int main()
     vector<palavraItem> listaPalavras;
     char novamente; 
 
-    cout << "================================\n";
-    cout << "          JOGO DA FORCA         \n";
-    cout << "================================\n";
+    cout << "=================================================\n";
+    cout << "                  JOGO DA FORCA                  \n";
+    cout << "=================================================\n";
 
     cout << "\nDigite o seu nome: ";
     cin >> nomejogador;
