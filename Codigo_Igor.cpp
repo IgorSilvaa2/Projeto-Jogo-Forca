@@ -12,7 +12,11 @@ using namespace std;
 /////////////////////// FUNCAO LIMPA TELA ///////////////////////////////////
 void limpa_Tela()
 {
-    system("CLS");
+    #ifdef _WIN32
+        system("CLS");
+    #else
+        system("clear");
+    #endif
 }
 /////////////////////// FUNCAO INPUT STRING ///////////////////////////////////
 void inputNomes(const string& a)
