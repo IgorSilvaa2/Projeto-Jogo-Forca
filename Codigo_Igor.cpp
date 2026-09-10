@@ -24,16 +24,21 @@ void inputNomes(const string& a)
     }
     ficheiro.close();
 }
-
-void jogo (const string *palavraSecreta, string categoria)
+/////////////////////FUNÇAO JOGO//////////////////////////////////
+bool jogo (const string *palavraSecreta, string categoria)
 {
     string letrasCertas = "";
     string letrasErradas = "";
-
+    int pontos = 10;
     char letra;
+
+    limpa_Tela();
+    cout << "A sua palavra e um " << categoria << " e tem " << palavraSecreta->size() << " letras\n";
+    cout << "Sua pontuacao e : " << pontos << "\n";
 
     while (true)
     {
+        bool ganhou = true;
         for (size_t i = 0; i < palavraSecreta->size(); i++)
         {
             if (letrasCertas.find((*palavraSecreta)[i]) != string::npos)
@@ -43,22 +48,51 @@ void jogo (const string *palavraSecreta, string categoria)
             else
             {
                 cout << "_ ";
+                ganhou = false;
+            }
+        }
+        cout << "\n";
+
+        // VERIFICA ViTORIA
+        if(ganhou){
+            cout << "\nParabens! Ganhou o jogo! A palavra era: " << *palavraSecreta << "\n";
+            cout << "Quer recomeçar ? 1- (sim) 2- (nao) : ";
+            int escolha;
+            cin >> escolha;
+            if(escolha == 1){
+                return true;
+            } else {
+                cout << "Ate logo ! \n";
+                return false;
             }
         }
 
-        cout << "\nDigite uma letra: ";
+        // VERIFICA DERROTA
+        if (pontos <= 0){
+            cout << "\nPerdedor !! A palavra era: " << *palavraSecreta << "\n";
+            cout << "Quer recomeçar ? 1- (sim) 2- (nao) : ";
+            int escolha;
+            cin >> escolha;
+            if(escolha == 1){
+                return true;
+            } else {
+                cout << "Ate logo ! \n";
+                return false;
+            }
+        }
+
+        cout << "Digite uma letra: ";
         cin >> letra;
         letra = toupper(letra);
 
         if (letrasCertas.find(letra) != string::npos ||
-                letrasErradas.find(letra) != string::npos)
+            letrasErradas.find(letra) != string::npos)
         {
             cout << "\n Essa letra ja foi usada!\n";
             continue;
         }
 
         bool encontrou = false;
-
         for (size_t i = 0; i < palavraSecreta->size(); i++)
         {
             if ((*palavraSecreta)[i] == letra)
@@ -70,78 +104,67 @@ void jogo (const string *palavraSecreta, string categoria)
         if (encontrou)
         {
             letrasCertas += letra;
+            pontos += 1;
         }
         else
         {
             letrasErradas += letra;
+            pontos -= 1;
         }
 
         limpa_Tela();
-        cout << "A sua palavra e um " << categoria
-             << " e tem " << palavraSecreta->size()
-             << " letras\n";
-        cout << "Certas: " << letrasCertas << " \n";
-        cout << "Erradas: " << letrasErradas << " \n";
-
+        cout << "A sua palavra e um " << categoria << " e tem " << palavraSecreta->size() << " letras\n";
+        cout << "Letras Certas: " << letrasCertas << " \n";
+        cout << "Letras Erradas: " << letrasErradas << " \n";
+        cout << "Sua pontuacao e : " << pontos << "\n";
     }
-
-
 }
 
-
 //////////////////////// FUNCAO MENU DIFICULDADDE //////////////////////////////////
-
 void menu_Dificuldade()
 {
-
     const string facil [10] = {"GATO", "CAO", "LEAO", "PATO", "RATO", "LOBO", "URSO", "VACA", "SAPO", "AVES"};
     const string medio[10]= {"GUITARRA", "ESPELHO", "COMPUTADOR", "MOCHILA", "CADERNO", "TELEFONE", "CARTEIRA", "LANTERNA", "RELOGIO", "MARTELO"};
     const string dificil [10]= {"OTORRINOLARINGOLOGISTA", "PSICOLOGO", "ARQUEOLOGIA", "PROGRAMADOR", "ENGENHEIRO", "ASTRONAUTA", "NUTRICIONISTA", "NEUROCIENTISTA", "EMPREENDEDOR", "FARMACEUTICO"};
 
+    bool continuarJogando = true;
+    srand(time(0));
 
-    cout << "\n 1 - Facil";
-    cout << "\n 2 - Medio";
-    cout << "\n 3 - Dificil \n";
-
-    int dificuldade;
-
-    do
+    while(continuarJogando)
     {
+        limpa_Tela();
+        cout << "\n --- SELEÇÃO DE DIFICULDADE ---";
+        cout << "\n 1 - Facil";
+        cout << "\n 2 - Medio";
+        cout << "\n 3 - Dificil \n";
+
+        int dificuldade;
         cout << "Escolha uma opcao : ";
-        cin >> dificuldade ;
+        cin >> dificuldade;
+
         if(dificuldade == 1)
         {
-            srand(time(0));
             int aleatorio = rand() % 10;
-            const string *palavraEscolhida = &facil[aleatorio];
-            cout << "A sua palavra e um animal e tem " << palavraEscolhida->size() << " letras \n";
-            jogo(palavraEscolhida, "animal");
+            continuarJogando = jogo(&facil[aleatorio], "animal");
         }
         else if (dificuldade == 2)
         {
-            srand(time(0));
             int aleatorio = rand() % 10;
-            const string *palavraEscolhida = &medio[aleatorio];
-            cout << "A sua palavra e um objeto e tem " << palavraEscolhida->size() << " letras \n";
-            jogo(palavraEscolhida, "objeto");
-
+            continuarJogando = jogo(&medio[aleatorio], "objeto");
         }
         else if(dificuldade == 3)
         {
-            srand(time(0));
             int aleatorio = rand() % 10;
-            const string *palavraEscolhida = &dificil[aleatorio];
-            cout << "A sua palavra e uma profissao e tem " << palavraEscolhida->size() << " letras \n";
-            jogo(palavraEscolhida, "profissao");
+            continuarJogando = jogo(&dificil[aleatorio], "profissao");
         }
         else
         {
-            cout << "Opcao invalida ! \n";
+            cout << "Opcao invalida ! Pressione Enter para tentar novamente.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.get();
         }
     }
-    while(dificuldade <1 || dificuldade > 3);
-
-
 }
 ////////////////////////// FUNCAO MENU ////////////////////////////////
 void menu_Inicial()
@@ -245,7 +268,7 @@ void menu_Inicial()
 
 int main()
 {
-    int *aleatorio;
+
     setlocale(LC_ALL, "Portuguese");
     menu_Inicial();
 
