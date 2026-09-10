@@ -33,7 +33,7 @@ bool jogo (const string *palavraSecreta, string categoria)
 {
     string letrasCertas = "";
     string letrasErradas = "";
-    int pontos = 10;
+    int pontos = 6;
     char letra;
 
     limpa_Tela();
@@ -60,6 +60,7 @@ bool jogo (const string *palavraSecreta, string categoria)
         // VERIFICA ViTORIA
         if(ganhou){
             cout << "\nParabens! Ganhou o jogo! A palavra era: " << *palavraSecreta << "\n";
+            cout << "Sua pontuação e : " << pontos << "\n";
             cout << "Quer recomeçar ? 1- (sim) 2- (nao) : ";
             int escolha;
             cin >> escolha;
@@ -166,6 +167,7 @@ void menu_Dificuldade()
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin.get();
+
         }
     }
 }
