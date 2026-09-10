@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <clocale>
 #include <limits>
-#include <vector>
 #include <ios>
 #include <cstdlib>
 #include <ctime>
+#include <cctype>
 
 using namespace std;
 
@@ -25,47 +24,86 @@ void inputNomes(const string& a)
     }
     ficheiro.close();
 }
+
+void jogo (const string *palavraSecreta, string categoria)
+{
+    string letrasCertas = "";
+    string letrasErradas = "";
+
+    char letra;
+
+    while (true)
+    {
+        for (size_t i = 0; i < palavraSecreta->size(); i++)
+        {
+            if (letrasCertas.find((*palavraSecreta)[i]) != string::npos)
+            {
+                cout << (*palavraSecreta)[i] << " ";
+            }
+            else
+            {
+                cout << "_ ";
+            }
+        }
+
+        cout << "\nDigite uma letra: ";
+        cin >> letra;
+        letra = toupper(letra);
+
+        if (letrasCertas.find(letra) != string::npos ||
+                letrasErradas.find(letra) != string::npos)
+        {
+            cout << "\n Essa letra ja foi usada!\n";
+            continue;
+        }
+
+        bool encontrou = false;
+
+        for (size_t i = 0; i < palavraSecreta->size(); i++)
+        {
+            if ((*palavraSecreta)[i] == letra)
+            {
+                encontrou = true;
+            }
+        }
+
+        if (encontrou)
+        {
+            letrasCertas += letra;
+        }
+        else
+        {
+            letrasErradas += letra;
+        }
+
+        limpa_Tela();
+        cout << "A sua palavra e um " << categoria
+             << " e tem " << palavraSecreta->size()
+             << " letras\n";
+        cout << "Certas: " << letrasCertas << " \n";
+        cout << "Erradas: " << letrasErradas << " \n";
+
+    }
+
+
+}
+
+
 //////////////////////// FUNCAO MENU DIFICULDADDE //////////////////////////////////
 
 void menu_Dificuldade()
 {
-    int dificuldade;
-    ofstream criaDificuldade("Dificuldades.txt");
 
-    if(criaDificuldade.is_open())
-    {
-        //FACEIS
-        criaDificuldade << "GATO CASA CARRO PORTA FRUTA LIVRO MESA CHAVE BOLA AGUA \n";
-        criaDificuldade << "GUITARRA CACHORRO ESPELHO COMPUTADOR TRABALHO DINHEIRO PLANETA FLORESTA MOCHILA GIRAFA \n";
-        criaDificuldade << "PARALELEPIPEDO PSICOLOGO OTORRINOLARINGOLOGISTA XILOFONE ARQUEOLOGIA EXCECAO SUBTERRANEO CALEIDOSCOPIO ESFINGE SIMETRIA \n";
-    }
-    else
-    {
-        cout << "O ficheiro de dificuldades nao foi aberto \n";
-    }
-    criaDificuldade.close();
-
-    ifstream escolheDif ("Dificuldades.txt");
-    string salvaDif;
-    vector <string> difVet;
-
-    if(escolheDif.is_open()){
-        while(escolheDif >> salvaDif){
-            difVet.push_back(salvaDif);
-        }
-        escolheDif.close();
-    }else{
-        cout << "Erro ao abrir ficheiro \n";
-    }
-
-    if(difVet.empty()){
-        cout << "O ficheiro esta vazio ! \n";
-    }
+    const string facil [10] = {"GATO", "CAO", "LEAO", "PATO", "RATO", "LOBO", "URSO", "VACA", "SAPO", "AVES"};
+    const string medio[10]= {"GUITARRA", "ESPELHO", "COMPUTADOR", "MOCHILA", "CADERNO", "TELEFONE", "CARTEIRA", "LANTERNA", "RELOGIO", "MARTELO"};
+    const string dificil [10]= {"OTORRINOLARINGOLOGISTA", "PSICOLOGO", "ARQUEOLOGIA", "PROGRAMADOR", "ENGENHEIRO", "ASTRONAUTA", "NUTRICIONISTA", "NEUROCIENTISTA", "EMPREENDEDOR", "FARMACEUTICO"};
 
 
     cout << "\n 1 - Facil";
     cout << "\n 2 - Medio";
     cout << "\n 3 - Dificil \n";
+
+    int dificuldade;
 
     do
     {
@@ -74,21 +112,27 @@ void menu_Dificuldade()
         if(dificuldade == 1)
         {
             srand(time(0));
-            int aletorio = rand() % difVet.size();
-            string difEscolhida = difVet[aletorio];
-            cout << difEscolhida;
+            int aleatorio = rand() % 10;
+            const string *palavraEscolhida = &facil[aleatorio];
+            cout << "A sua palavra e um animal e tem " << palavraEscolhida->size() << " letras \n";
+            jogo(palavraEscolhida, "animal");
         }
         else if (dificuldade == 2)
         {
             srand(time(0));
-            int aletorio = rand() % difVet.size();
+            int aleatorio = rand() % 10;
+            const string *palavraEscolhida = &medio[aleatorio];
+            cout << "A sua palavra e um objeto e tem " << palavraEscolhida->size() << " letras \n";
+            jogo(palavraEscolhida, "objeto");
 
         }
         else if(dificuldade == 3)
         {
             srand(time(0));
-            int aletorio = rand() % difVet.size();
-
+            int aleatorio = rand() % 10;
+            const string *palavraEscolhida = &dificil[aleatorio];
+            cout << "A sua palavra e uma profissao e tem " << palavraEscolhida->size() << " letras \n";
+            jogo(palavraEscolhida, "profissao");
         }
         else
         {
@@ -104,6 +148,9 @@ void menu_Inicial()
 {
     string nome;
     int escolha;
+    cout << "Digite o seu nome : ";
+    getline (cin,nome);
+    inputNomes(nome);
 
     do
     {
@@ -137,10 +184,6 @@ void menu_Inicial()
                  << " | |_) | |___| |  | |      \\ V / | | |\\  | |_| | |_| |_|_|_|\n"
                  << " |____/|_____|_|  |_|       \\_/  |_|_| \\_|____/ \\___/(_|_|_)\n"
                  << "=========================================================================\n" << "\n";
-
-            cout << "Digite o seu nome : ";
-            getline (cin,nome);
-            inputNomes(nome);
             menu_Dificuldade();
             break;
         case 2 :
@@ -191,6 +234,8 @@ void menu_Inicial()
             limpa_Tela();
             cout << "Ate logo !!";
             break;
+        default:
+            limpa_Tela();
         }
     }
     while(escolha < 1 || escolha > 3);
@@ -200,9 +245,10 @@ void menu_Inicial()
 
 int main()
 {
+    int *aleatorio;
     setlocale(LC_ALL, "Portuguese");
-
     menu_Inicial();
+
 
 
     return 0;
