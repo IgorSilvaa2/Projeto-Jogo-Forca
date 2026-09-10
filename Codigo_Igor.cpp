@@ -132,8 +132,7 @@ void menu_Dificuldade()
 
     while(continuarJogando)
     {
-        limpa_Tela();
-        cout << "\n --- SELEÇÃO DE DIFICULDADE ---";
+
         cout << "\n 1 - Facil";
         cout << "\n 2 - Medio";
         cout << "\n 3 - Dificil \n";
