@@ -264,10 +264,31 @@ bool jogo(const string *palavraSecreta, string categoria, const string &nome, st
 
             return perguntarContinuar();
         }
-
+        ////////////////////// PEDIR LETRA //////////////////////////////////
         cout << "\nDigite uma letra: ";
         cin >> letra;
         limparBuffer(); 
+        ////TENTAR COLOCAR A PALAVRA TODA
+        if (letra == '!') 
+        {
+            string chute;
+            cin >> chute;
+
+            // Converte a palavra chutada para maiúsculas
+            for (size_t i = 0; i < chute.size(); i++) {
+                chute[i] = toupper(chute[i]);
+            }
+        // Compara com a palavra secreta
+            if (chute == *palavraSecreta) {
+                letrasCertas = *palavraSecreta; // Revela todas as letras no ecrã
+            } else {
+                cout << "\nPalavra errada!\n";
+                erros = 6; // Atribui derrota imediata (ou retira pontos)
+            }
+
+            limpa_Tela();
+            continue; // Volta ao início do ciclo para processar a vitória ou derrota
+        }
 
         letra = toupper(letra);
 
